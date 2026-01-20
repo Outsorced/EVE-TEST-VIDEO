@@ -5,6 +5,7 @@ import functools
 import os
 import sys
 import subprocess
+import csv
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -138,6 +139,122 @@ def _append_metadata_headers(headers: List[str]) -> List[str]:
         if h not in out:
             out.append(h)
     return out
+
+def _as_int(v: Any) -> int | None:
+    """Best-effort int conversion. Returns None for blank/None/non-numeric."""
+    if v is None:
+        return None
+    if isinstance(v, int):
+        return v
+    if isinstance(v, float):
+        return int(v)
+    s = str(v).strip()
+    if s == "":
+        return None
+    # allow "123" but not "123.4"
+    if s.isdigit() or (s.startswith("-") and s[1:].isdigit()):
+        try:
+            return int(s)
+        except Exception:
+            return None
+    return None
+
+def _write_instance_summaries(
+    out_dir: Path,
+    rows: List[Dict[str, Any]],
+    *,
+    item_names_lower: set[str] | None = None,
+    metadata: Dict[str, Any] | None = None,
+) -> None:
+    import csv
+    import re
+
+    meta = metadata or {}
+
+    def _norm_mod(v: Any) -> str:
+        s = str(v or "").strip()
+        s2 = re.sub(r"^[\s\-\u2013\u2014]+", "", s).strip()
+        s2 = re.sub(r"\s+", " ", s2)
+        if item_names_lower is not None and s2 and (s2.lower() in item_names_lower):
+            return s2
+        return s2 or s
+
+    def _as_int(v: Any) -> int | None:
+        try:
+            if v is None or v == "":
+                return None
+            if isinstance(v, int):
+                return v
+            vs = str(v).strip()
+            if vs.isdigit() or (vs.startswith("-") and vs[1:].isdigit()):
+                return int(vs)
+        except Exception:
+            return None
+        return None
+
+    # Instance summary: dataset+result+module
+    inst: Dict[tuple[str, str, str], Dict[str, int]] = {}
+    for r in rows:
+        ds = str(r.get("dataset") or "").strip()
+        res = str(r.get("result") or "").strip()
+        mod = _norm_mod(r.get("module"))
+        key = (ds, res, mod)
+        inst.setdefault(key, {"count": 0, "total": 0, "value_count": 0})
+        inst[key]["count"] += 1
+        amt = _as_int(r.get("amount"))
+        if amt is not None:
+            inst[key]["total"] += amt
+            inst[key]["value_count"] += 1
+
+    cols = list(INSTANCE_SUMMARY_HEADERS)
+    cols = _append_metadata_headers(cols)
+    with (out_dir / "Instance_Summary.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        for (ds, res, mod), v in sorted(inst.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
+            vc = int(v.get("value_count") or 0)
+            tot = int(v.get("total") or 0)
+            row = {
+                "dataset": ds,
+                "result": res,
+                "module": mod,
+                "count": int(v.get("count") or 0),
+                "total_amount": tot if vc > 0 else "",
+                "avg_amount": (tot / vc) if vc > 0 else "",
+            }
+            row.update(meta)
+            w.writerow(row)
+
+    # Total summary: dataset only
+    totals: Dict[str, Dict[str, int]] = {}
+    for r in rows:
+        ds = str(r.get("dataset") or "").strip()
+        if not ds:
+            continue
+        rec = totals.setdefault(ds, {"count": 0, "total": 0, "value_count": 0})
+        rec["count"] += 1
+        amt = _as_int(r.get("amount"))
+        if amt is not None:
+            rec["total"] += amt
+            rec["value_count"] += 1
+
+    with (out_dir / "Total_Summary.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        for ds in sorted(totals.keys(), key=str.lower):
+            v = totals[ds]
+            vc = int(v.get("value_count") or 0)
+            tot = int(v.get("total") or 0)
+            row = {
+                "dataset": ds,
+                "result": "ALL",
+                "module": "ALL",
+                "count": int(v.get("count") or 0),
+                "total_amount": tot if vc > 0 else "",
+                "avg_amount": (tot / vc) if vc > 0 else "",
+            }
+            row.update(meta)
+            w.writerow(row)
 
 
 def _write_fight_summary(
@@ -523,53 +640,12 @@ def _write_fight_summary(
                 rr[f"{ds}_total"] = tot if vc > 0 else ""
                 rr[f"{ds}_avg"] = (tot / vc) if vc > 0 else ""
 
-    # Instance summary (Suggestion A)
-    def _write_instance_summary(out_dir):
-        import csv
-        import re
-
-        def _norm_mod(v: Any) -> str:
-            s = str(v or "").strip()
-            # Strip leading dash/space artifacts ("- Module", "- - Module")
-            s2 = re.sub(r"^[\s\-\u2013\u2014]+", "", s).strip()
-            s2 = re.sub(r"\s+", " ", s2)
-            # If SDE is available and the cleaned name exists, use it.
-            if item_names_lower is not None and s2 and (s2.lower() in item_names_lower):
-                return s2
-            return s2 or s
-        inst = {}
-        for r in rows:
-            ds = str(r.get("dataset") or "").strip()
-            res = str(r.get("result") or "").strip()
-            mod = _norm_mod(r.get("module"))
-            key = (ds, res, mod)
-            inst.setdefault(key, {"count": 0, "total": 0, "value_count": 0})
-            inst[key]["count"] += 1
-            amt = _as_int(r.get("amount"))
-            if amt is not None:
-                inst[key]["total"] += amt
-                inst[key]["value_count"] += 1
-
-        cols = list(INSTANCE_SUMMARY_HEADERS)
-        cols = _append_metadata_headers(cols)
-        with (out_dir / "Instance_Summary.csv").open("w", newline="", encoding="utf-8") as f:
-            w = csv.DictWriter(f, fieldnames=cols)
-            w.writeheader()
-            for (ds, res, mod), v in sorted(inst.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
-                vc = int(v.get("value_count") or 0)
-                tot = int(v.get("total") or 0)
-                row = {
-                    "dataset": ds,
-                    "result": res,
-                    "module": mod,
-                    "count": int(v.get("count") or 0),
-                    "total_amount": tot if vc > 0 else "",
-                    "avg_amount": (tot / vc) if vc > 0 else "",
-                }
-                row.update(meta)
-                w.writerow(row)
-
-    _write_instance_summary(summary_dir)
+    _write_instance_summaries(
+        summary_dir,
+        rows,
+        item_names_lower=item_names_lower,
+        metadata=meta,
+    )
 
     # User-requested rename: fight_roster -> Pilot_list
     with (summary_dir / "Pilot_list.csv").open("w", newline="", encoding="utf-8") as f:
@@ -1986,59 +2062,12 @@ def main(argv: List[str] | None = None) -> int:
             win_line = f"Window: {win.start.strftime('%d-%m-%Y %H:%M:%S')} -> {win.end.strftime('%d-%m-%Y %H:%M:%S')} (duration {int((win.end-win.start).total_seconds())}s)"
             (sdir / "fight_summary.txt").write_text("\n".join([f"Pilot: {pilot}", win_line, f"Rows involving pilot: {len(involved_rows)}"]) + "\n", encoding="utf-8")
 
-            # Instance summary for player
-            import csv
-            import re
-
-            def _norm_mod(v: Any) -> str:
-                s = str(v or "").strip()
-                s2 = re.sub(r"^[\s\-\u2013\u2014]+", "", s).strip()
-                s2 = re.sub(r"\s+", " ", s2)
-                if item_names_lower is not None and s2 and (s2.lower() in item_names_lower):
-                    return s2
-                return s2 or s
-            def _as_int(v):
-                try:
-                    if v is None or v == "":
-                        return None
-                    if isinstance(v, int):
-                        return v
-                    vs = str(v).strip()
-                    if vs.isdigit() or (vs.startswith("-") and vs[1:].isdigit()):
-                        return int(vs)
-                except Exception:
-                    return None
-                return None
-            inst = {}
-            for r in involved_rows:
-                ds = str(r.get("dataset") or "").strip()
-                res = str(r.get("result") or "").strip()
-                mod = _norm_mod(r.get("module"))
-                key = (ds, res, mod)
-                inst.setdefault(key, {"count":0,"total":0,"value_count":0})
-                inst[key]["count"] += 1
-                amt = _as_int(r.get("amount"))
-                if amt is not None:
-                    inst[key]["total"] += amt
-                    inst[key]["value_count"] += 1
-            cols = list(INSTANCE_SUMMARY_HEADERS)
-            cols = _append_metadata_headers(cols)
-            with (sdir / "Instance_Summary.csv").open("w", newline="", encoding="utf-8") as f:
-                w = csv.DictWriter(f, fieldnames=cols)
-                w.writeheader()
-                for (ds,res,mod), v in sorted(inst.items(), key=lambda kv:(kv[0][0],kv[0][1],kv[0][2])):
-                    vc = int(v.get("value_count") or 0)
-                    tot = int(v.get("total") or 0)
-                    row = {
-                        "dataset": ds,
-                        "result": res,
-                        "module": mod,
-                        "count": int(v.get("count") or 0),
-                        "total_amount": tot if vc>0 else "",
-                        "avg_amount": (tot/vc) if vc>0 else "",
-                    }
-                    row.update(metadata)
-                    w.writerow(row)
+            _write_instance_summaries(
+                sdir,
+                involved_rows,
+                item_names_lower=item_names_lower,
+                metadata=metadata,
+            )
 
             # Pilot_list (single row) with ship meta + basic stats
             ship_classes = []
