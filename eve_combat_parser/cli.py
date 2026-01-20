@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import os
 import sys
 import subprocess
+import csv
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -30,6 +32,14 @@ from .constants import (
     DEFAULT_LOG_FOLDER,
     DEFAULT_SDE_DIR,
     TS_FMT,
+    SCHEMA_VERSION,
+    PARSER_VERSION,
+    METADATA_HEADERS,
+    FIGHT_SUMMARY_HEADERS_BASE,
+    PILOT_LIST_HEADERS_BASE,
+    PILOT_SHIP_SESSIONS_HEADERS,
+    INSTANCE_SUMMARY_HEADERS,
+    ALLIANCE_CORP_LIST_HEADERS,
     HEADERS,
     OTHERS_HEADERS,
     OUT_DAMAGE_DONE_NPC,
@@ -90,6 +100,7 @@ from .esi import (
     requests_import_guard,
     save_cache,
 )
+from . import exporter as exporter
 from .exporter import write_csv
 from .npc import (
     split_rows_players_npc_drones_charges,
@@ -99,7 +110,7 @@ from .npc import (
 )
 from .parser import build_ship_timeline_and_afflog, parse_log_file_to_rows
 from .prompts import PromptConfig, Prompter
-from .sde import ensure_sde_present, load_item_name_set
+from .sde import ensure_sde_present, load_item_name_set, required_sde_paths
 from .fights import filter_rows_by_window, split_rows_into_fights
 from .timeline import lookup_ship, restrict_timeline
 from .ship_meta import ShipMetaResolver, MONTH_ABBR_LOWER
@@ -122,6 +133,130 @@ def _open_folder(path: Path) -> None:
         return
 
 
+def _append_metadata_headers(headers: List[str]) -> List[str]:
+    out = list(headers)
+    for h in METADATA_HEADERS:
+        if h not in out:
+            out.append(h)
+    return out
+
+def _as_int(v: Any) -> int | None:
+    """Best-effort int conversion. Returns None for blank/None/non-numeric."""
+    if v is None:
+        return None
+    if isinstance(v, int):
+        return v
+    if isinstance(v, float):
+        return int(v)
+    s = str(v).strip()
+    if s == "":
+        return None
+    # allow "123" but not "123.4"
+    if s.isdigit() or (s.startswith("-") and s[1:].isdigit()):
+        try:
+            return int(s)
+        except Exception:
+            return None
+    return None
+
+def _write_instance_summaries(
+    out_dir: Path,
+    rows: List[Dict[str, Any]],
+    *,
+    item_names_lower: set[str] | None = None,
+    metadata: Dict[str, Any] | None = None,
+) -> None:
+    import csv
+    import re
+
+    meta = metadata or {}
+
+    def _norm_mod(v: Any) -> str:
+        s = str(v or "").strip()
+        s2 = re.sub(r"^[\s\-\u2013\u2014]+", "", s).strip()
+        s2 = re.sub(r"\s+", " ", s2)
+        if item_names_lower is not None and s2 and (s2.lower() in item_names_lower):
+            return s2
+        return s2 or s
+
+    def _as_int(v: Any) -> int | None:
+        try:
+            if v is None or v == "":
+                return None
+            if isinstance(v, int):
+                return v
+            vs = str(v).strip()
+            if vs.isdigit() or (vs.startswith("-") and vs[1:].isdigit()):
+                return int(vs)
+        except Exception:
+            return None
+        return None
+
+    # Instance summary: dataset+result+module
+    inst: Dict[tuple[str, str, str], Dict[str, int]] = {}
+    for r in rows:
+        ds = str(r.get("dataset") or "").strip()
+        res = str(r.get("result") or "").strip()
+        mod = _norm_mod(r.get("module"))
+        key = (ds, res, mod)
+        inst.setdefault(key, {"count": 0, "total": 0, "value_count": 0})
+        inst[key]["count"] += 1
+        amt = _as_int(r.get("amount"))
+        if amt is not None:
+            inst[key]["total"] += amt
+            inst[key]["value_count"] += 1
+
+    cols = list(INSTANCE_SUMMARY_HEADERS)
+    cols = _append_metadata_headers(cols)
+    with (out_dir / "Instance_Summary.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        for (ds, res, mod), v in sorted(inst.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
+            vc = int(v.get("value_count") or 0)
+            tot = int(v.get("total") or 0)
+            row = {
+                "dataset": ds,
+                "result": res,
+                "module": mod,
+                "count": int(v.get("count") or 0),
+                "total_amount": tot if vc > 0 else "",
+                "avg_amount": (tot / vc) if vc > 0 else "",
+            }
+            row.update(meta)
+            w.writerow(row)
+
+    # Total summary: dataset only
+    totals: Dict[str, Dict[str, int]] = {}
+    for r in rows:
+        ds = str(r.get("dataset") or "").strip()
+        if not ds:
+            continue
+        rec = totals.setdefault(ds, {"count": 0, "total": 0, "value_count": 0})
+        rec["count"] += 1
+        amt = _as_int(r.get("amount"))
+        if amt is not None:
+            rec["total"] += amt
+            rec["value_count"] += 1
+
+    with (out_dir / "Total_Summary.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        for ds in sorted(totals.keys(), key=str.lower):
+            v = totals[ds]
+            vc = int(v.get("value_count") or 0)
+            tot = int(v.get("total") or 0)
+            row = {
+                "dataset": ds,
+                "result": "ALL",
+                "module": "ALL",
+                "count": int(v.get("count") or 0),
+                "total_amount": tot if vc > 0 else "",
+                "avg_amount": (tot / vc) if vc > 0 else "",
+            }
+            row.update(meta)
+            w.writerow(row)
+
+
 def _write_fight_summary(
     path: Path,
     fight_i: int,
@@ -131,6 +266,7 @@ def _write_fight_summary(
     counts: Dict[str, int] | None = None,
     item_names_lower: set[str] | None = None,
     ship_meta=None,
+    metadata: Dict[str, Any] | None = None,
 ) -> None:
     """Write fight summaries.
 
@@ -144,6 +280,7 @@ def _write_fight_summary(
 
     summary_dir = path / "summary"
     summary_dir.mkdir(parents=True, exist_ok=True)
+    meta = metadata or {}
 
     # Collect sets
     pilots = set()
@@ -338,23 +475,13 @@ def _write_fight_summary(
 
     # -------------------- CSV summary (1 row) -------------------
     # Keep stable columns; flatten counts into count__<name>
-    csv_cols = [
-        "fight_id",
-        "window_start",
-        "window_end",
-        "duration_seconds",
-        "rows",
-        "unique_pilots",
-        "unique_alliances",
-        "unique_corps",
-        "unique_ship_types",
-        "log_files",
-    ]
+    csv_cols = list(FIGHT_SUMMARY_HEADERS_BASE)
     counts_flat = {}
     for k, v in (counts or {}).items():
         ck = "count__" + str(k)
         counts_flat[ck] = int(v)
     csv_cols.extend(sorted(counts_flat.keys()))
+    csv_cols = _append_metadata_headers(csv_cols)
 
     csv_row = {
         "fight_id": fight_i,
@@ -368,6 +495,7 @@ def _write_fight_summary(
         "unique_ship_types": len(ships),
         "log_files": ";".join(sorted(log_files)),
         **counts_flat,
+        **meta,
     }
 
     import csv
@@ -381,18 +509,7 @@ def _write_fight_summary(
     # Pilot_list includes ship meta + aggregated stats (Suggestion A)
     # Pilot_list: keep a single primary hull in ship_types. Preserve reships in
     # summary/Pilot_ship_sessions.csv.
-    roster_cols_base = [
-        "pilot",
-        "alliance",
-        "corp",
-        "ship_types",  # primary hull
-        "ship_types_seen",
-        "ship_types_seen_count",
-        "fighter_types",
-        "ship_classes",
-        "ship_tech_levels",
-        "hull_rarities",
-    ]
+    roster_cols_base = list(PILOT_LIST_HEADERS_BASE)
     roster_rows = []
     for p in sorted(pilots, key=str.lower):
         a = ",".join(sorted(pilot_to_alliances.get(p, set()), key=str.lower))
@@ -507,6 +624,7 @@ def _write_fight_summary(
         stat_cols.extend([f"{ds}_count", f"{ds}_total", f"{ds}_avg"])
 
     roster_cols = roster_cols_base + stat_cols
+    roster_cols = _append_metadata_headers(roster_cols)
 
     for rr in roster_rows:
         p = rr.get("pilot")
@@ -522,74 +640,27 @@ def _write_fight_summary(
                 rr[f"{ds}_total"] = tot if vc > 0 else ""
                 rr[f"{ds}_avg"] = (tot / vc) if vc > 0 else ""
 
-    # Instance summary (Suggestion A)
-    def _write_instance_summary(out_dir):
-        import csv
-        import re
-
-        def _norm_mod(v: Any) -> str:
-            s = str(v or "").strip()
-            # Strip leading dash/space artifacts ("- Module", "- - Module")
-            s2 = re.sub(r"^[\s\-\u2013\u2014]+", "", s).strip()
-            s2 = re.sub(r"\s+", " ", s2)
-            # If SDE is available and the cleaned name exists, use it.
-            if item_names_lower is not None and s2 and (s2.lower() in item_names_lower):
-                return s2
-            return s2 or s
-        inst = {}
-        for r in rows:
-            ds = str(r.get("dataset") or "").strip()
-            res = str(r.get("result") or "").strip()
-            mod = _norm_mod(r.get("module"))
-            key = (ds, res, mod)
-            inst.setdefault(key, {"count": 0, "total": 0, "value_count": 0})
-            inst[key]["count"] += 1
-            amt = _as_int(r.get("amount"))
-            if amt is not None:
-                inst[key]["total"] += amt
-                inst[key]["value_count"] += 1
-
-        cols = ["dataset", "result", "module", "count", "total_amount", "avg_amount"]
-        with (out_dir / "Instance_Summary.csv").open("w", newline="", encoding="utf-8") as f:
-            w = csv.DictWriter(f, fieldnames=cols)
-            w.writeheader()
-            for (ds, res, mod), v in sorted(inst.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
-                vc = int(v.get("value_count") or 0)
-                tot = int(v.get("total") or 0)
-                w.writerow({
-                    "dataset": ds,
-                    "result": res,
-                    "module": mod,
-                    "count": int(v.get("count") or 0),
-                    "total_amount": tot if vc > 0 else "",
-                    "avg_amount": (tot / vc) if vc > 0 else "",
-                })
-
-    _write_instance_summary(summary_dir)
+    _write_instance_summaries(
+        summary_dir,
+        rows,
+        item_names_lower=item_names_lower,
+        metadata=meta,
+    )
 
     # User-requested rename: fight_roster -> Pilot_list
     with (summary_dir / "Pilot_list.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=roster_cols)
         w.writeheader()
         for rr in roster_rows:
-            w.writerow(rr)
+            row = dict(rr)
+            row.update(meta)
+            w.writerow(row)
 
     # -------------------- Pilot_ship_sessions.csv (Option 1) -------------------
     # One row per (pilot, ship) showing first/last seen. Drones are excluded;
     # fighters are tracked in Pilot_list.fighter_types.
-    sess_cols = [
-        "pilot",
-        "alliance",
-        "corp",
-        "ship_type",
-        "ship_class",
-        "ship_tech",
-        "hull_rarity",
-        "first_seen",
-        "last_seen",
-        "duration_s",
-        "seen_events_count",
-    ]
+    sess_cols = list(PILOT_SHIP_SESSIONS_HEADERS)
+    sess_cols = _append_metadata_headers(sess_cols)
     with (summary_dir / "Pilot_ship_sessions.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=sess_cols)
         w.writeheader()
@@ -610,21 +681,21 @@ def _write_fight_summary(
                     cls, tech, rarity = "", "", ""
             if first is None or last is None:
                 continue
-            w.writerow(
-                {
-                    "pilot": p,
-                    "alliance": a,
-                    "corp": c,
-                    "ship_type": sh,
-                    "ship_class": cls,
-                    "ship_tech": tech,
-                    "hull_rarity": rarity,
-                    "first_seen": first.strftime("%d-%m-%Y %H:%M:%S"),
-                    "last_seen": last.strftime("%d-%m-%Y %H:%M:%S"),
-                    "duration_s": int((last - first).total_seconds()),
-                    "seen_events_count": int(rec.get("count") or 0),
-                }
-            )
+            row = {
+                "pilot": p,
+                "alliance": a,
+                "corp": c,
+                "ship_type": sh,
+                "ship_class": cls,
+                "ship_tech": tech,
+                "hull_rarity": rarity,
+                "first_seen": first.strftime("%d-%m-%Y %H:%M:%S"),
+                "last_seen": last.strftime("%d-%m-%Y %H:%M:%S"),
+                "duration_s": int((last - first).total_seconds()),
+                "seen_events_count": int(rec.get("count") or 0),
+            }
+            row.update(meta)
+            w.writerow(row)
 
     # -------------------- Alliance-corp_list CSV -------------------
     # Count unique pilots per (alliance, corp) with best-effort primary affiliation.
@@ -661,19 +732,20 @@ def _write_fight_summary(
         allc = _primary(pilot_all_counts.get(p, {}))
         bucket.setdefault((allc, corp), set()).add(p)
 
-    ac_cols = ["alliance", "corp", "pilot_count", "pilots"]
+    ac_cols = list(ALLIANCE_CORP_LIST_HEADERS)
+    ac_cols = _append_metadata_headers(ac_cols)
     with (summary_dir / "Alliance-corp_list.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=ac_cols)
         w.writeheader()
         for (allc, corp), ps in sorted(bucket.items(), key=lambda kv: (kv[0][0].lower(), kv[0][1].lower())):
-            w.writerow(
-                {
-                    "alliance": allc,
-                    "corp": corp,
-                    "pilot_count": len(ps),
-                    "pilots": ";".join(sorted(ps, key=str.lower)),
-                }
-            )
+            row = {
+                "alliance": allc,
+                "corp": corp,
+                "pilot_count": len(ps),
+                "pilots": ";".join(sorted(ps, key=str.lower)),
+            }
+            row.update(meta)
+            w.writerow(row)
 
     # fight_lists.csv removed (redundant with fight_roster.csv).
 
@@ -781,11 +853,15 @@ def _choose_log_subfolder(
 
     msg = "Select which log folder to use:\n" + "\n".join(lines) + "\n\nEnter a number:"  # noqa: E501
 
-    if prompter.config.non_interactive:
+    if prompter.config.non_interactive and not prompter.config.assume_yes:
         raise SystemExit(
             "Multiple log subfolders found, but --non-interactive is enabled. "
             "Use --subfolder NAME or --folder-index N."
         )
+
+    if prompter.config.assume_yes:
+        # Auto-select first option when prompting is suppressed.
+        return candidates[0]
 
     while True:
         try:
@@ -857,13 +933,20 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
     p.add_argument(
         "--yes",
+        dest="assume_yes",
         action="store_true",
-        help="Auto-accept prompts (also auto-downloads missing SDE files)",
+        help="Auto-accept prompts (assume Yes).",
     )
     p.add_argument(
         "--non-interactive",
+        dest="non_interactive",
         action="store_true",
-        help="Fail instead of prompting (useful for unattended runs)",
+        help="Do not prompt; error if user input would be required (CI/unattended).",
+    )
+    p.add_argument(
+        "--offline",
+        action="store_true",
+        help="Disable network operations (no SDE downloads, no ESI calls).",
     )
 
     return p
@@ -907,7 +990,10 @@ def main(argv: List[str] | None = None) -> int:
 
     out_root.mkdir(parents=True, exist_ok=True)
 
-    prompter = Prompter(PromptConfig(assume_yes=bool(args.yes), non_interactive=bool(args.non_interactive)))
+    assume_yes = bool(getattr(args, "assume_yes", False))
+    non_interactive = bool(getattr(args, "non_interactive", False) or getattr(args, "offline", False))
+    prompter = Prompter(PromptConfig(assume_yes=assume_yes, non_interactive=non_interactive))
+
 
     # If the root has no .txt files but contains subfolders that do, offer a selection.
     # This makes it easy to keep a stable "logs" root with multiple fights inside.
@@ -922,10 +1008,23 @@ def main(argv: List[str] | None = None) -> int:
     # This makes repeated runs non-destructive by default.
     if getattr(args, "no_run_folder", False):
         out_folder = out_root
+        run_id_str = "0"
     else:
         base = _safe_folder_name(chosen_folder.name if chosen_folder != log_folder else log_folder.name)
         run_id = _next_run_id(out_root, base)
-        out_folder = out_root / f"{run_id:03d}_{base}"
+        run_id_str = f"{run_id:03d}"
+        out_folder = out_root / f"{run_id_str}_{base}"
+
+    metadata = {
+        "schema_version": SCHEMA_VERSION,
+        "parser_version": PARSER_VERSION,
+        "run_id": run_id_str,
+    }
+    write_csv = functools.partial(  # type: ignore[assignment]
+        exporter.write_csv,
+        metadata=metadata,
+        metadata_headers=METADATA_HEADERS,
+    )
 
     out_folder.mkdir(parents=True, exist_ok=True)
     log_paths = _iter_log_files(chosen_folder)
@@ -941,12 +1040,22 @@ def main(argv: List[str] | None = None) -> int:
     for fn in log_paths:
         print(f" - {fn.name}")
 
+    if getattr(args, "offline", False):
+        missing = [p for p in required_sde_paths(str(args.sde_dir)) if not os.path.exists(p)]
+        if missing:
+            raise SystemExit(
+    "Offline mode: required SDE CSV file(s) missing:\n - "
+    + "\n - ".join(missing)
+    + "\nRun without --offline to download, or place them under --sde-dir."
+)
+
     if not prompter.confirm("Continue analysis?", default=True):
         print("Analysis cancelled.")
         return 0
 
     # SDE (for item-name filter)
-    ensure_sde_present(str(args.sde_dir), prompter)
+    if not getattr(args, "offline", False):
+        ensure_sde_present(str(args.sde_dir), prompter)
     item_names_lower = load_item_name_set(str(args.sde_dir))
 
     # Aff DBs prompts
@@ -1033,6 +1142,9 @@ def main(argv: List[str] | None = None) -> int:
     pilot_db_updates_total = 0
 
     # ESI cache is shared across fights.
+    if getattr(args, "offline", False):
+        args.no_esi = True
+
     if not args.no_esi:
         try:
             requests_import_guard()
@@ -1549,6 +1661,7 @@ def main(argv: List[str] | None = None) -> int:
             fight_combat_rows,
             item_names_lower=item_names_lower,
             ship_meta=ship_meta,
+            metadata=metadata,
             counts={
                 OUT_REPAIRS_DONE_PLAYERS: len(rep_done_players),
                 OUT_REPAIRS_DONE_NPC: len(rep_done_npc),
@@ -1976,56 +2089,12 @@ def main(argv: List[str] | None = None) -> int:
             win_line = f"Window: {win.start.strftime('%d-%m-%Y %H:%M:%S')} -> {win.end.strftime('%d-%m-%Y %H:%M:%S')} (duration {int((win.end-win.start).total_seconds())}s)"
             (sdir / "fight_summary.txt").write_text("\n".join([f"Pilot: {pilot}", win_line, f"Rows involving pilot: {len(involved_rows)}"]) + "\n", encoding="utf-8")
 
-            # Instance summary for player
-            import csv
-            import re
-
-            def _norm_mod(v: Any) -> str:
-                s = str(v or "").strip()
-                s2 = re.sub(r"^[\s\-\u2013\u2014]+", "", s).strip()
-                s2 = re.sub(r"\s+", " ", s2)
-                if item_names_lower is not None and s2 and (s2.lower() in item_names_lower):
-                    return s2
-                return s2 or s
-            def _as_int(v):
-                try:
-                    if v is None or v == "":
-                        return None
-                    if isinstance(v, int):
-                        return v
-                    vs = str(v).strip()
-                    if vs.isdigit() or (vs.startswith("-") and vs[1:].isdigit()):
-                        return int(vs)
-                except Exception:
-                    return None
-                return None
-            inst = {}
-            for r in involved_rows:
-                ds = str(r.get("dataset") or "").strip()
-                res = str(r.get("result") or "").strip()
-                mod = _norm_mod(r.get("module"))
-                key = (ds, res, mod)
-                inst.setdefault(key, {"count":0,"total":0,"value_count":0})
-                inst[key]["count"] += 1
-                amt = _as_int(r.get("amount"))
-                if amt is not None:
-                    inst[key]["total"] += amt
-                    inst[key]["value_count"] += 1
-            cols = ["dataset","result","module","count","total_amount","avg_amount"]
-            with (sdir / "Instance_Summary.csv").open("w", newline="", encoding="utf-8") as f:
-                w = csv.DictWriter(f, fieldnames=cols)
-                w.writeheader()
-                for (ds,res,mod), v in sorted(inst.items(), key=lambda kv:(kv[0][0],kv[0][1],kv[0][2])):
-                    vc = int(v.get("value_count") or 0)
-                    tot = int(v.get("total") or 0)
-                    w.writerow({
-                        "dataset": ds,
-                        "result": res,
-                        "module": mod,
-                        "count": int(v.get("count") or 0),
-                        "total_amount": tot if vc>0 else "",
-                        "avg_amount": (tot/vc) if vc>0 else "",
-                    })
+            _write_instance_summaries(
+                sdir,
+                involved_rows,
+                item_names_lower=item_names_lower,
+                metadata=metadata,
+            )
 
             # Pilot_list (single row) with ship meta + basic stats
             ship_classes = []
@@ -2133,19 +2202,19 @@ def main(argv: List[str] | None = None) -> int:
                     row[f"{ds}_total"] = tot if vc>0 else ""
                     row[f"{ds}_avg"] = (tot/vc) if vc>0 else ""
 
-            cols = ["pilot","alliance","corp","ship_types","ship_types_seen","ship_types_seen_count","fighter_types","ship_classes","ship_tech_levels","hull_rarities"]
+            cols = list(PILOT_LIST_HEADERS_BASE)
             for ds in datasets:
                 cols.extend([f"{ds}_count",f"{ds}_total",f"{ds}_avg"])
+            cols = _append_metadata_headers(cols)
             with (sdir / "Pilot_list.csv").open("w", newline="", encoding="utf-8") as f:
                 w = csv.DictWriter(f, fieldnames=cols)
                 w.writeheader()
+                row.update(metadata)
                 w.writerow(row)
 
             # Pilot_ship_sessions.csv (player-only)
-            sess_cols = [
-                "pilot","ship_type","ship_class","ship_tech","hull_rarity",
-                "first_seen","last_seen","duration_s","seen_events_count",
-            ]
+            sess_cols = [h for h in PILOT_SHIP_SESSIONS_HEADERS if h not in ("alliance", "corp")]
+            sess_cols = _append_metadata_headers(sess_cols)
             with (sdir / "Pilot_ship_sessions.csv").open("w", newline="", encoding="utf-8") as f:
                 w = csv.DictWriter(f, fieldnames=sess_cols)
                 w.writeheader()
@@ -2160,7 +2229,7 @@ def main(argv: List[str] | None = None) -> int:
                             cls, tech, rarity = ship_meta.resolve_extended(sh)
                         except Exception:
                             cls, tech, rarity = "","",""
-                    w.writerow({
+                    row = {
                         "pilot": pilot,
                         "ship_type": sh,
                         "ship_class": cls,
@@ -2170,7 +2239,9 @@ def main(argv: List[str] | None = None) -> int:
                         "last_seen": last.strftime("%d-%m-%Y %H:%M:%S"),
                         "duration_s": int((last-first).total_seconds()),
                         "seen_events_count": int(rec.get("count") or 0),
-                    })
+                    }
+                    row.update(metadata)
+                    w.writerow(row)
 
         for pilot in sorted(pilots_in_fight, key=str.lower):
             _write_player_folder(pilot)
