@@ -1,0 +1,22 @@
+# Logs and outputs
+logs/
+out/
+output/
+*_combined/
+
+# Local caches
+__pycache__/
+*.pyc
+
+# SDE data (large / external)
+sde/
+data/sde/
+
+# Virtual environments
+.venv/
+venv/
+
+# OS / editor
+.vscode/
+.DS_Store
+Thumbs.db
