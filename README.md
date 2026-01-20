@@ -1,5 +1,15 @@
 # EVE Combat Parser
 
+> ⚠️ **Experimental / Unstable**
+>
+> This project is under active development.
+> Output formats, schemas, and internal APIs are **not stable** and may change
+> between versions without notice.
+>
+> This repository currently focuses on the **EVE Online combat log parser only**.
+> Web/UI components are intentionally out of scope at this stage.
+
+
 Parse EVE Online **combat log** `.txt` files into structured CSV outputs:
 
 - Per-fight folders (auto split by inactivity)
