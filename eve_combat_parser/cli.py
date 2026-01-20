@@ -110,7 +110,7 @@ from .npc import (
 )
 from .parser import build_ship_timeline_and_afflog, parse_log_file_to_rows
 from .prompts import PromptConfig, Prompter
-from .sde import ensure_sde_present, load_item_name_set
+from .sde import ensure_sde_present, load_item_name_set, required_sde_paths
 from .fights import filter_rows_by_window, split_rows_into_fights
 from .timeline import lookup_ship, restrict_timeline
 from .ship_meta import ShipMetaResolver, MONTH_ABBR_LOWER
@@ -853,11 +853,15 @@ def _choose_log_subfolder(
 
     msg = "Select which log folder to use:\n" + "\n".join(lines) + "\n\nEnter a number:"  # noqa: E501
 
-    if prompter.config.non_interactive:
+    if prompter.config.non_interactive and not prompter.config.assume_yes:
         raise SystemExit(
             "Multiple log subfolders found, but --non-interactive is enabled. "
             "Use --subfolder NAME or --folder-index N."
         )
+
+    if prompter.config.assume_yes:
+        # Auto-select first option when prompting is suppressed.
+        return candidates[0]
 
     while True:
         try:
@@ -929,13 +933,20 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
     p.add_argument(
         "--yes",
+        dest="assume_yes",
         action="store_true",
-        help="Auto-accept prompts (also auto-downloads missing SDE files)",
+        help="Auto-accept prompts (assume Yes).",
     )
     p.add_argument(
         "--non-interactive",
+        dest="non_interactive",
         action="store_true",
-        help="Fail instead of prompting (useful for unattended runs)",
+        help="Do not prompt; error if user input would be required (CI/unattended).",
+    )
+    p.add_argument(
+        "--offline",
+        action="store_true",
+        help="Disable network operations (no SDE downloads, no ESI calls).",
     )
 
     return p
@@ -979,7 +990,10 @@ def main(argv: List[str] | None = None) -> int:
 
     out_root.mkdir(parents=True, exist_ok=True)
 
-    prompter = Prompter(PromptConfig(assume_yes=bool(args.yes), non_interactive=bool(args.non_interactive)))
+    assume_yes = bool(getattr(args, "assume_yes", False))
+    non_interactive = bool(getattr(args, "non_interactive", False) or getattr(args, "offline", False))
+    prompter = Prompter(PromptConfig(assume_yes=assume_yes, non_interactive=non_interactive))
+
 
     # If the root has no .txt files but contains subfolders that do, offer a selection.
     # This makes it easy to keep a stable "logs" root with multiple fights inside.
@@ -1026,12 +1040,22 @@ def main(argv: List[str] | None = None) -> int:
     for fn in log_paths:
         print(f" - {fn.name}")
 
+    if getattr(args, "offline", False):
+        missing = [p for p in required_sde_paths(str(args.sde_dir)) if not os.path.exists(p)]
+        if missing:
+            raise SystemExit(
+    "Offline mode: required SDE CSV file(s) missing:\n - "
+    + "\n - ".join(missing)
+    + "\nRun without --offline to download, or place them under --sde-dir."
+)
+
     if not prompter.confirm("Continue analysis?", default=True):
         print("Analysis cancelled.")
         return 0
 
     # SDE (for item-name filter)
-    ensure_sde_present(str(args.sde_dir), prompter)
+    if not getattr(args, "offline", False):
+        ensure_sde_present(str(args.sde_dir), prompter)
     item_names_lower = load_item_name_set(str(args.sde_dir))
 
     # Aff DBs prompts
@@ -1118,6 +1142,9 @@ def main(argv: List[str] | None = None) -> int:
     pilot_db_updates_total = 0
 
     # ESI cache is shared across fights.
+    if getattr(args, "offline", False):
+        args.no_esi = True
+
     if not args.no_esi:
         try:
             requests_import_guard()
