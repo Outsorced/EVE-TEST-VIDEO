@@ -1,9 +1,0 @@
-dataset,result,module,count,total_amount,avg_amount
-damage_done,Hits,Domination Medium Proton Smartbomb,26,731,28.115384615384617
-damage_received,Glances Off,Imperial Navy Curator,8,417,52.125
-damage_received,Grazes,Imperial Navy Curator,7,306,43.714285714285715
-damage_received,Hits,Imperial Navy Curator,14,936,66.85714285714286
-damage_received,Misses completely,Imperial Navy Curator,5,0,0.0
-damage_received,Penetrates,Imperial Navy Curator,18,1557,86.5
-damage_received,Smashes,Imperial Navy Curator,12,1249,104.08333333333333
-damage_received,Wrecks,Imperial Navy Curator,1,229,229.0

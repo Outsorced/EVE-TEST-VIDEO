@@ -1,8 +1,0 @@
-dataset,result,module,count,total_amount,avg_amount
-capacitor_done,Remote Capacitor Transfer,Large Remote Capacitor Transmitter II,29,7080,244.13793103448276
-damage_done,Hits,Domination Medium Proton Smartbomb,28,821,29.321428571428573
-damage_received,Hits,Domination Medium Proton Smartbomb,116,4320,37.241379310344826
-propulsion_jam_attempts,Attempt,,10,,
-repairs_done,,Large Remote Shield Booster II,89,52412,588.8988764044943
-repairs_done,,Pithum A-Type Medium Remote Shield Booster,133,58919,443.0
-repairs_done,,Pithum B-Type Medium Remote Shield Booster,13,5918,455.2307692307692

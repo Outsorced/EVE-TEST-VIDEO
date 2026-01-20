@@ -1,3 +1,0 @@
-Pilot: Owndaworld
-Window: 15-01-2026 20:29:17 -> 15-01-2026 21:30:36 (duration 3679s)
-Rows involving pilot: 2423

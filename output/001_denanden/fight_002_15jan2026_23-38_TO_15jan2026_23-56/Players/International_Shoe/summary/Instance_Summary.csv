@@ -1,7 +1,0 @@
-dataset,result,module,count,total_amount,avg_amount
-damage_done,Grazes,425mm AutoCannon II,3,268,89.33333333333333
-damage_done,Hits,425mm AutoCannon II,1,215,215.0
-damage_done,Hits,Domination Medium Proton Smartbomb,26,412,15.846153846153847
-damage_done,Misses completely,425mm AutoCannon II,1,0,0.0
-damage_received,Hits,Inferno Rage Heavy Assault Missile,5,1786,357.2
-propulsion_jam_attempts,Attempt,,6,,

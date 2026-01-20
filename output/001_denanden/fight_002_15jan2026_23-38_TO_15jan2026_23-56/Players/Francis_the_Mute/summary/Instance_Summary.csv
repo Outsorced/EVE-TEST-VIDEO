@@ -1,7 +1,0 @@
-dataset,result,module,count,total_amount,avg_amount
-damage_done,Glances Off,Warrior II,17,133,7.823529411764706
-damage_done,Grazes,Warrior II,16,101,6.3125
-damage_done,Hits,Warrior II,24,240,10.0
-damage_done,Penetrates,Warrior II,18,233,12.944444444444445
-damage_done,Smashes,Warrior II,21,323,15.380952380952381
-propulsion_jam_attempts,Attempt,,10,,

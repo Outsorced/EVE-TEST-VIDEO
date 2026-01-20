@@ -1,7 +1,0 @@
-dataset,result,module,count,total_amount,avg_amount
-damage_done,Hits,Domination Medium Proton Smartbomb,24,480,20.0
-damage_received,Grazes,Warden II,1,18,18.0
-damage_received,Hits,Small EMP Smartbomb II,3,44,14.666666666666666
-damage_received,Misses completely,Warden II,3,0,0.0
-damage_received,Penetrates,Warden II,1,40,40.0
-damage_received,Wrecks,Warden II,1,98,98.0
