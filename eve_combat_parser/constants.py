@@ -1,6 +1,74 @@
 from __future__ import annotations
 
+from .version import __version__
+
 TS_FMT = "%Y.%m.%d %H:%M:%S"
+
+# CSV schema metadata
+SCHEMA_VERSION = "1"
+PARSER_VERSION = __version__
+METADATA_HEADERS = [
+    "schema_version",
+    "parser_version",
+    "run_id",
+]
+
+# Summary CSV headers (base order)
+FIGHT_SUMMARY_HEADERS_BASE = [
+    "fight_id",
+    "window_start",
+    "window_end",
+    "duration_seconds",
+    "rows",
+    "unique_pilots",
+    "unique_alliances",
+    "unique_corps",
+    "unique_ship_types",
+    "log_files",
+]
+
+PILOT_LIST_HEADERS_BASE = [
+    "pilot",
+    "alliance",
+    "corp",
+    "ship_types",
+    "ship_types_seen",
+    "ship_types_seen_count",
+    "fighter_types",
+    "ship_classes",
+    "ship_tech_levels",
+    "hull_rarities",
+]
+
+PILOT_SHIP_SESSIONS_HEADERS = [
+    "pilot",
+    "alliance",
+    "corp",
+    "ship_type",
+    "ship_class",
+    "ship_tech",
+    "hull_rarity",
+    "first_seen",
+    "last_seen",
+    "duration_s",
+    "seen_events_count",
+]
+
+INSTANCE_SUMMARY_HEADERS = [
+    "dataset",
+    "result",
+    "module",
+    "count",
+    "total_amount",
+    "avg_amount",
+]
+
+ALLIANCE_CORP_LIST_HEADERS = [
+    "alliance",
+    "corp",
+    "pilot_count",
+    "pilots",
+]
 
 # Defaults / Config
 DEFAULT_LOG_FOLDER = "./logs"
