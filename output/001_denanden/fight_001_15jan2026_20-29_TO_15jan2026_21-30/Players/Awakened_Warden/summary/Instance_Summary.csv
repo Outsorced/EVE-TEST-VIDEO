@@ -1,0 +1,8 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Glances Off,Quad 800mm Repeating Cannon II,10,27450,2745.0
+damage_done,Grazes,Quad 800mm Repeating Cannon II,56,98773,1763.8035714285713
+damage_done,Hits,Quad 800mm Repeating Cannon II,24,74349,3097.875
+damage_done,Misses completely,Quad 800mm Repeating Cannon II,10,0,0.0
+damage_done,Penetrates,Quad 800mm Repeating Cannon II,6,15062,2510.3333333333335
+damage_done,Smashes,Quad 800mm Repeating Cannon II,2,11066,5533.0
+damage_received,Hits,Praedormitan Missile,57,7427,130.2982456140351

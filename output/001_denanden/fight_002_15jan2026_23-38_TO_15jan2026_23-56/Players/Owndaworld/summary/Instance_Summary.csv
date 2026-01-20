@@ -1,0 +1,10 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Heavy Gremlin Compact Energy Neutralizer,12,4382,365.1666666666667
+capacitor_done,Remote Capacitor Transfer,Large Remote Capacitor Transmitter II,905,194185,214.56906077348066
+capacitor_received,Remote Capacitor Transfer,Large Remote Capacitor Transmitter II,433,92927,214.6120092378753
+damage_received,Hits,Domination Medium Proton Smartbomb,18,684,38.0
+ewar_effects_received,ECM,Gravimetric ECM II,2,,
+repairs_done,,Large Remote Shield Booster II,169,98062,580.2485207100592
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,165,72357,438.5272727272727
+repairs_received,,Large Remote Shield Booster II,24,9046,376.9166666666667
+repairs_received,,Pithum A-Type Medium Remote Shield Booster,22,5778,262.6363636363636

@@ -1,0 +1,4 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Hits,Imperial Navy Large EMP Smartbomb,381,67829,178.0288713910761
+damage_received,Hits,Oneiric Missile,136,8874,65.25
+propulsion_jam_attempts,Attempt,,18,,

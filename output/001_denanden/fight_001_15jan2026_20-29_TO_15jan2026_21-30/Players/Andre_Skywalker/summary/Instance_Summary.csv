@@ -1,0 +1,4 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Hits,Imperial Navy Large EMP Smartbomb,58,14674,253.0
+damage_received,Hits,Imperial Navy Large EMP Smartbomb,18,1957,108.72222222222223
+propulsion_jam_attempts,Attempt,,4,,

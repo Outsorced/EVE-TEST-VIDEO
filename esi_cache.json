@@ -1,0 +1,394 @@
+{
+  "character_ids": {
+    "Cruise Missile": 2112111250,
+    "Heavy Missile": 2122367525,
+    "Light Missile": 95116960,
+    "Arithmos Tyrannos": null
+  },
+  "corp_info": {
+    "1000006": {
+      "ticker": "DCMI",
+      "alliance_ticker": ""
+    },
+    "98594363": {
+      "ticker": "V4L1D",
+      "alliance_ticker": ""
+    },
+    "1000169": {
+      "ticker": "CAS",
+      "alliance_ticker": ""
+    }
+  },
+  "pilot_alliance": {
+    "Cruise Missile": "",
+    "Heavy Missile": "",
+    "Light Missile": "",
+    "Arithmos Tyrannos": ""
+  },
+  "type_ids": {
+    "- Large Remote Shield Booster II": null,
+    "- Pithum A-Type Medium Remote Shield Booster": null,
+    "- Pithum B-Type Medium Remote Shield Booster": null
+  },
+  "type_info": {},
+  "group_info": {},
+  "ship_meta_by_name": {
+    "naglfar fleet issue": {
+      "ship_class": "Dreadnought",
+      "ship_tech": "T1",
+      "hull_rarity": "Faction"
+    },
+    "revelation navy issue": {
+      "ship_class": "Dreadnought",
+      "ship_tech": "T1",
+      "hull_rarity": "Faction"
+    },
+    "warp disrupt probe": {
+      "ship_class": "Interdiction Probe",
+      "ship_tech": "T1",
+      "hull_rarity": "Tech I"
+    },
+    "'packrat' mobile tractor unit": {
+      "ship_class": "Mobile Tractor Unit",
+      "ship_tech": "T1",
+      "hull_rarity": "Tech I"
+    },
+    "sabre": {
+      "ship_class": "Interdictor",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "basilisk": {
+      "ship_class": "Logistics",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "loki": {
+      "ship_class": "Strategic Cruiser",
+      "ship_tech": "T3",
+      "hull_rarity": "Tech III"
+    },
+    "sleipnir": {
+      "ship_class": "Command Ship",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "rook": {
+      "ship_class": "Combat Recon Ship",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "cenotaph": {
+      "ship_class": "Combat Battlecruiser",
+      "ship_tech": "T1",
+      "hull_rarity": "Faction"
+    },
+    "kitsune": {
+      "ship_class": "Electronic Attack Ship",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "heretic": {
+      "ship_class": "Interdictor",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "sacrilege": {
+      "ship_class": "Heavy Assault Cruiser",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "inferno rage heavy assault missile": {
+      "ship_class": "Advanced Heavy Assault Missile",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "wasp ii": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "valkyrie ii": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "vespa ec-600": {
+      "ship_class": "Electronic Warfare Drone",
+      "ship_tech": "T1",
+      "hull_rarity": "Standard"
+    },
+    "scorpion": {
+      "ship_class": "Battleship",
+      "ship_tech": "T1",
+      "hull_rarity": "Tech I"
+    },
+    "warden ii": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "scourge rage heavy assault missile": {
+      "ship_class": "Advanced Heavy Assault Missile",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "claymore": {
+      "ship_class": "Command Ship",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "armageddon": {
+      "ship_class": "Battleship",
+      "ship_tech": "T1",
+      "hull_rarity": "Tech I"
+    },
+    "damnation": {
+      "ship_class": "Command Ship",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "hammerhead ii": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "eos": {
+      "ship_class": "Command Ship",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "guardian": {
+      "ship_class": "Logistics",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "bifrost": {
+      "ship_class": "Command Destroyer",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "warrior ii": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    },
+    "sentry mutated drone": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T1",
+      "hull_rarity": "Abyssal"
+    },
+    "caldari navy warden": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T1",
+      "hull_rarity": "Faction"
+    },
+    "imperial navy curator": {
+      "ship_class": "Combat Drone",
+      "ship_tech": "T1",
+      "hull_rarity": "Faction"
+    },
+    "devoter": {
+      "ship_class": "Heavy Interdiction Cruiser",
+      "ship_tech": "T2",
+      "hull_rarity": "Tech II"
+    }
+  },
+  "module_meta_by_name": {
+    "imperial navy large emp smartbomb": {
+      "module_tech_level": "T1",
+      "module_meta_level": "4",
+      "module_meta_group": "Faction"
+    },
+    "quad 800mm repeating cannon ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "dual giga pulse laser ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "phantasmata missile": {
+      "module_tech_level": "T1",
+      "module_meta_level": "0",
+      "module_meta_group": ""
+    },
+    "praedormitan missile": {
+      "module_tech_level": "T1",
+      "module_meta_level": "0",
+      "module_meta_group": ""
+    },
+    "oneiric missile": {
+      "module_tech_level": "T1",
+      "module_meta_level": "0",
+      "module_meta_group": ""
+    },
+    "upgraded avenger": {
+      "module_tech_level": "T1",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "drifter response battleship": {
+      "module_tech_level": "T1",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "sleepless keeper": {
+      "module_tech_level": "T1",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "emergent warden": {
+      "module_tech_level": "T1",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "- large remote shield booster ii": {
+      "module_tech_level": "",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "- pithum a-type medium remote shield booster": {
+      "module_tech_level": "",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "- pithum b-type medium remote shield booster": {
+      "module_tech_level": "",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "pithum a-type medium remote shield booster": {
+      "module_tech_level": "T1",
+      "module_meta_level": "6",
+      "module_meta_group": "Deadspace"
+    },
+    "large remote shield booster ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "warrior ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "domination medium proton smartbomb": {
+      "module_tech_level": "T1",
+      "module_meta_level": "4",
+      "module_meta_group": "Faction"
+    },
+    "425mm autocannon ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "hammerhead ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "inferno rage heavy assault missile": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "scourge rage heavy assault missile": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "sentry mutated drone": {
+      "module_tech_level": "T1",
+      "module_meta_level": "",
+      "module_meta_group": "Abyssal"
+    },
+    "caldari navy warden": {
+      "module_tech_level": "T1",
+      "module_meta_level": "4",
+      "module_meta_group": "Faction"
+    },
+    "imperial navy curator": {
+      "module_tech_level": "T1",
+      "module_meta_level": "4",
+      "module_meta_group": "Faction"
+    },
+    "small emp smartbomb ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "warden ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "inferno javelin heavy assault missile": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "caldari navy scourge heavy assault missile": {
+      "module_tech_level": "T1",
+      "module_meta_level": "4",
+      "module_meta_group": "Faction"
+    },
+    "gravimetric ecm ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "vespa ec-600": {
+      "module_tech_level": "T1",
+      "module_meta_level": "",
+      "module_meta_group": ""
+    },
+    "ladar ecm ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "halting compact ladar ecm": {
+      "module_tech_level": "T1",
+      "module_meta_level": "1",
+      "module_meta_group": "Tech I"
+    },
+    "languid enduring ladar ecm": {
+      "module_tech_level": "T1",
+      "module_meta_level": "1",
+      "module_meta_group": "Tech I"
+    },
+    "heavy gremlin compact energy neutralizer": {
+      "module_tech_level": "T1",
+      "module_meta_level": "1",
+      "module_meta_group": "Tech I"
+    },
+    "medium energy nosferatu ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "heavy energy nosferatu ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "medium gremlin compact energy neutralizer": {
+      "module_tech_level": "T1",
+      "module_meta_level": "1",
+      "module_meta_group": "Tech I"
+    },
+    "medium energy neutralizer ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    },
+    "large remote capacitor transmitter ii": {
+      "module_tech_level": "T2",
+      "module_meta_level": "5",
+      "module_meta_group": "Tech II"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+Pilot: Khan Zung
+Window: 15-01-2026 23:38:47 -> 15-01-2026 23:56:03 (duration 1036s)
+Rows involving pilot: 220

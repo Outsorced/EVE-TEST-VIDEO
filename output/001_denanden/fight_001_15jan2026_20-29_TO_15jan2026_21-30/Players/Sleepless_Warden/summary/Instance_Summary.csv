@@ -1,0 +1,14 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Glances Off,Dual Giga Pulse Laser II,5,129925,25985.0
+damage_done,Glances Off,Quad 800mm Repeating Cannon II,12,24869,2072.4166666666665
+damage_done,Grazes,Dual Giga Pulse Laser II,10,178633,17863.3
+damage_done,Grazes,Quad 800mm Repeating Cannon II,45,42839,951.9777777777778
+damage_done,Hits,Dual Giga Pulse Laser II,23,528377,22972.91304347826
+damage_done,Hits,Quad 800mm Repeating Cannon II,12,32255,2687.9166666666665
+damage_done,Misses completely,Dual Giga Pulse Laser II,2,0,0.0
+damage_done,Misses completely,Quad 800mm Repeating Cannon II,3,0,0.0
+damage_done,Penetrates,Dual Giga Pulse Laser II,8,234126,29265.75
+damage_done,Penetrates,Quad 800mm Repeating Cannon II,5,12625,2525.0
+damage_done,Smashes,Dual Giga Pulse Laser II,3,137503,45834.333333333336
+damage_done,Smashes,Quad 800mm Repeating Cannon II,2,7281,3640.5
+damage_received,Hits,Phantasmata Missile,78,207636,2662.0

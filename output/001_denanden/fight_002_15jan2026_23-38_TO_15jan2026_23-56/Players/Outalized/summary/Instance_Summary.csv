@@ -1,0 +1,27 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Heavy Gremlin Compact Energy Neutralizer,7,2387,341.0
+cap_warfare_received,Energy Nosferatu,Heavy Energy Nosferatu II,3,222,74.0
+cap_warfare_received,Energy Nosferatu,Medium Energy Nosferatu II,2,2,1.0
+damage_done,Hits,Domination Medium Proton Smartbomb,32,1389,43.40625
+damage_received,Glances Off,Imperial Navy Curator,1,54,54.0
+damage_received,Grazes,Sentry Mutated Drone,1,31,31.0
+damage_received,Grazes,Warden II,1,18,18.0
+damage_received,Hits,Domination Medium Proton Smartbomb,466,21020,45.107296137339056
+damage_received,Hits,Imperial Navy Curator,2,146,73.0
+damage_received,Hits,Inferno Rage Heavy Assault Missile,22,10546,479.3636363636364
+damage_received,Hits,Scourge Rage Heavy Assault Missile,5,2241,448.2
+damage_received,Hits,Sentry Mutated Drone,1,45,45.0
+damage_received,Hits,Small EMP Smartbomb II,1,16,16.0
+damage_received,Misses completely,Warden II,1,0,0.0
+damage_received,Penetrates,Imperial Navy Curator,3,288,96.0
+damage_received,Penetrates,Sentry Mutated Drone,1,60,60.0
+damage_received,Penetrates,Warden II,1,40,40.0
+damage_received,Smashes,Imperial Navy Curator,2,169,84.5
+damage_received,Smashes,Sentry Mutated Drone,1,71,71.0
+damage_received,Wrecks,Warden II,1,98,98.0
+ewar_effects_received,ECM,Halting Compact Ladar ECM,3,,
+ewar_effects_received,ECM,Ladar ECM II,12,,
+repairs_done,,Large Remote Shield Booster II,4,2511,627.75
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,256,114067,445.57421875
+repairs_received,,Large Remote Shield Booster II,4,2511,627.75
+repairs_received,,Pithum A-Type Medium Remote Shield Booster,69,25734,372.95652173913044

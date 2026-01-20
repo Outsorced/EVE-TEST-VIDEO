@@ -1,0 +1,49 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Heavy Gremlin Compact Energy Neutralizer,49,13515,275.81632653061223
+cap_warfare_received,Energy Neutralizer,Medium Gremlin Compact Energy Neutralizer,8,598,74.75
+damage_done,Glances Off,Warrior II,18,96,5.333333333333333
+damage_done,Grazes,Warrior II,23,115,5.0
+damage_done,Hits,Domination Medium Proton Smartbomb,54,2340,43.333333333333336
+damage_done,Hits,Warrior II,32,221,6.90625
+damage_done,Penetrates,Warrior II,36,319,8.86111111111111
+damage_done,Smashes,Warrior II,36,373,10.36111111111111
+damage_received,Glances Off,Caldari Navy Warden,2,43,21.5
+damage_received,Glances Off,Imperial Navy Curator,15,783,52.2
+damage_received,Glances Off,Sentry Mutated Drone,4,145,36.25
+damage_received,Glances Off,Warrior II,1,32,32.0
+damage_received,Grazes,Caldari Navy Warden,2,35,17.5
+damage_received,Grazes,Imperial Navy Curator,10,441,44.1
+damage_received,Grazes,Sentry Mutated Drone,2,66,33.0
+damage_received,Hits,Caldari Navy Scourge Heavy Assault Missile,11,3709,337.1818181818182
+damage_received,Hits,Caldari Navy Warden,1,27,27.0
+damage_received,Hits,Domination Medium Proton Smartbomb,756,32733,43.29761904761905
+damage_received,Hits,Imperial Navy Curator,22,1458,66.27272727272727
+damage_received,Hits,Inferno Javelin Heavy Assault Missile,20,5537,276.85
+damage_received,Hits,Inferno Rage Heavy Assault Missile,79,18663,236.2405063291139
+damage_received,Hits,Scourge Rage Heavy Assault Missile,19,5256,276.63157894736844
+damage_received,Hits,Sentry Mutated Drone,1,54,54.0
+damage_received,Hits,Small EMP Smartbomb II,1,16,16.0
+damage_received,Hits,Warrior II,1,38,38.0
+damage_received,Misses completely,Caldari Navy Warden,6,0,0.0
+damage_received,Misses completely,Imperial Navy Curator,14,0,0.0
+damage_received,Misses completely,Sentry Mutated Drone,2,0,0.0
+damage_received,Misses completely,Warden II,2,0,0.0
+damage_received,Penetrates,Caldari Navy Warden,3,107,35.666666666666664
+damage_received,Penetrates,Imperial Navy Curator,24,2063,85.95833333333333
+damage_received,Penetrates,Sentry Mutated Drone,4,241,60.25
+damage_received,Penetrates,Warrior II,2,110,55.0
+damage_received,Smashes,Caldari Navy Warden,1,41,41.0
+damage_received,Smashes,Imperial Navy Curator,14,1445,103.21428571428571
+damage_received,Smashes,Sentry Mutated Drone,2,149,74.5
+damage_received,Smashes,Warrior II,2,133,66.5
+damage_received,Wrecks,Imperial Navy Curator,1,229,229.0
+ewar_effects_received,ECM,Halting Compact Ladar ECM,16,,
+ewar_effects_received,ECM,Ladar ECM II,21,,
+ewar_effects_received,ECM,Languid Enduring Ladar ECM,9,,
+ewar_effects_received,ECM,Vespa EC-600,1,,
+propulsion_jam_attempts,Attempt,,11,,
+repairs_done,,Large Remote Shield Booster II,16,8938,558.625
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,75,29024,386.9866666666667
+repairs_done,,Pithum B-Type Medium Remote Shield Booster,166,57445,346.0542168674699
+repairs_received,,Large Remote Shield Booster II,16,8938,558.625
+repairs_received,,Pithum A-Type Medium Remote Shield Booster,75,29024,386.9866666666667

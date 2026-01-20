@@ -1,0 +1,7 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Nosferatu,Heavy Energy Nosferatu II,42,162,3.857142857142857
+cap_warfare_received,Energy Nosferatu,Medium Energy Nosferatu II,28,0,0.0
+damage_done,Glances Off,425mm AutoCannon II,1,788,788.0
+damage_done,Hits,425mm AutoCannon II,2,2173,1086.5
+damage_done,Penetrates,425mm AutoCannon II,1,1409,1409.0
+ewar_effects_received,ECM,Ladar ECM II,5,,

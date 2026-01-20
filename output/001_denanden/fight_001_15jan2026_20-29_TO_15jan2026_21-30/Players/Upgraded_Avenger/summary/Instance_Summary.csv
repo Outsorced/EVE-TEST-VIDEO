@@ -1,0 +1,14 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Upgraded Avenger,182,204750,1125.0
+damage_done,Glances Off,Dual Giga Pulse Laser II,11,285640,25967.272727272728
+damage_done,Glances Off,Quad 800mm Repeating Cannon II,12,16590,1382.5
+damage_done,Grazes,Dual Giga Pulse Laser II,6,118621,19770.166666666668
+damage_done,Grazes,Quad 800mm Repeating Cannon II,12,10257,854.75
+damage_done,Hits,Dual Giga Pulse Laser II,87,2417841,27791.275862068964
+damage_done,Hits,Quad 800mm Repeating Cannon II,65,136635,2102.076923076923
+damage_done,Penetrates,Dual Giga Pulse Laser II,66,2379973,36060.19696969697
+damage_done,Penetrates,Quad 800mm Repeating Cannon II,42,114736,2731.809523809524
+damage_done,Smashes,Dual Giga Pulse Laser II,13,508700,39130.769230769234
+damage_done,Smashes,Quad 800mm Repeating Cannon II,5,14407,2881.4
+damage_received,Hits,Phantasmata Missile,164,922481,5624.884146341464
+propulsion_jam_attempts,Attempt,,20,,

@@ -1,0 +1,5 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Emergent Warden,97,2231,23.0
+damage_done,Hits,Imperial Navy Large EMP Smartbomb,251,60738,241.9840637450199
+damage_received,Hits,Oneiric Missile,146,13141,90.0068493150685
+propulsion_jam_attempts,Attempt,,14,,

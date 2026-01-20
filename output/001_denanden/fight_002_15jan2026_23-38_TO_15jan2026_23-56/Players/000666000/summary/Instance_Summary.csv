@@ -1,0 +1,16 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Medium Energy Neutralizer II,15,2080,138.66666666666666
+damage_done,Glances Off,425mm AutoCannon II,19,7816,411.36842105263156
+damage_done,Grazes,425mm AutoCannon II,43,9659,224.62790697674419
+damage_done,Hits,425mm AutoCannon II,26,14748,567.2307692307693
+damage_done,Hits,Domination Medium Proton Smartbomb,1253,91547,73.06225059856345
+damage_done,Misses completely,425mm AutoCannon II,9,0,0.0
+damage_done,Penetrates,425mm AutoCannon II,19,12627,664.578947368421
+damage_done,Smashes,425mm AutoCannon II,4,3025,756.25
+damage_received,Hits,Domination Medium Proton Smartbomb,808,27231,33.70173267326733
+damage_received,Hits,Small EMP Smartbomb II,1,12,12.0
+ewar_effects_received,ECM,Ladar ECM II,4,,
+repairs_done,,Large Remote Shield Booster II,8,4407,550.875
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,14,4013,286.64285714285717
+repairs_received,,Large Remote Shield Booster II,8,4407,550.875
+repairs_received,,Pithum A-Type Medium Remote Shield Booster,14,4013,286.64285714285717

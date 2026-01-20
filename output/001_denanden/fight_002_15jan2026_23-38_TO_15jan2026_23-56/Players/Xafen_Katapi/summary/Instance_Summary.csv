@@ -1,0 +1,6 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_received,Grazes,Warrior II,1,10,10.0
+damage_received,Hits,Warrior II,2,25,12.5
+damage_received,Misses completely,Warrior II,1,0,0.0
+damage_received,Penetrates,Warrior II,2,32,16.0
+damage_received,Smashes,Warrior II,1,21,21.0

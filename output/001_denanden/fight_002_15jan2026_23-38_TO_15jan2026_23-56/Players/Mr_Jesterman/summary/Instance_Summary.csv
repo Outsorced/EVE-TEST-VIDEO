@@ -1,0 +1,11 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_received,Glances Off,Caldari Navy Warden,2,43,21.5
+damage_received,Glances Off,Warrior II,1,32,32.0
+damage_received,Grazes,Caldari Navy Warden,2,35,17.5
+damage_received,Hits,Caldari Navy Warden,1,27,27.0
+damage_received,Hits,Warrior II,1,38,38.0
+damage_received,Misses completely,Caldari Navy Warden,6,0,0.0
+damage_received,Penetrates,Caldari Navy Warden,3,107,35.666666666666664
+damage_received,Penetrates,Warrior II,1,60,60.0
+damage_received,Smashes,Caldari Navy Warden,1,41,41.0
+damage_received,Smashes,Warrior II,2,133,66.5

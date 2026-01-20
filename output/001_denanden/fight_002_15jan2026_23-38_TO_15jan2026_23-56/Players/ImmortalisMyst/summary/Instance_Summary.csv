@@ -1,0 +1,7 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Hits,Domination Medium Proton Smartbomb,56,2538,45.32142857142857
+damage_received,Hits,Domination Medium Proton Smartbomb,99,3800,38.38383838383838
+propulsion_jam_attempts,Attempt,,9,,
+repairs_done,,Large Remote Shield Booster II,66,38648,585.5757575757576
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,59,25713,435.8135593220339
+repairs_done,,Pithum B-Type Medium Remote Shield Booster,15,6492,432.8

@@ -1,0 +1,10 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Heavy Gremlin Compact Energy Neutralizer,98,31615,322.6020408163265
+cap_warfare_received,Energy Neutralizer,Medium Energy Neutralizer II,15,2080,138.66666666666666
+damage_done,Glances Off,425mm AutoCannon II,1,373,373.0
+damage_done,Grazes,425mm AutoCannon II,5,1423,284.6
+damage_done,Hits,425mm AutoCannon II,6,2914,485.6666666666667
+damage_done,Hits,Domination Medium Proton Smartbomb,16,679,42.4375
+damage_done,Penetrates,425mm AutoCannon II,5,3078,615.6
+damage_done,Smashes,425mm AutoCannon II,3,2328,776.0
+propulsion_jam_attempts,Attempt,,1,,

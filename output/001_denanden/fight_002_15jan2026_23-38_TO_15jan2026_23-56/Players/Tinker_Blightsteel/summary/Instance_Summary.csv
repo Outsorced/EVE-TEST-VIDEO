@@ -1,0 +1,5 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Hits,Domination Medium Proton Smartbomb,28,452,16.142857142857142
+damage_received,Hits,Inferno Rage Heavy Assault Missile,13,2531,194.69230769230768
+ewar_effects_received,ECM,Halting Compact Ladar ECM,7,,
+propulsion_jam_attempts,Attempt,,5,,

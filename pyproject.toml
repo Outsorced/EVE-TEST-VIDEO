@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eve-combat-parser"
+dynamic = ["version"]
+description = "Parse EVE Online combat logs into structured CSV exports."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Local"}]
+
+[project.optional-dependencies]
+esi = ["requests>=2.31"]
+
+[project.scripts]
+eve-combat-parser = "eve_combat_parser.cli:main"
+
+[tool.setuptools]
+packages = ["eve_combat_parser"]
+
+[tool.setuptools.dynamic]
+version = {attr = "eve_combat_parser.version.__version__"}

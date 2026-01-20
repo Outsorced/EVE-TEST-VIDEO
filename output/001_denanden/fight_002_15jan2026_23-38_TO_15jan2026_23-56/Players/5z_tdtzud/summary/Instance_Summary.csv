@@ -1,0 +1,5 @@
+dataset,result,module,count,total_amount,avg_amount
+capacitor_done,Remote Capacitor Transfer,Large Remote Capacitor Transmitter II,8,2808,351.0
+damage_done,Hits,Domination Medium Proton Smartbomb,10,244,24.4
+damage_received,Hits,Domination Medium Proton Smartbomb,59,2235,37.88135593220339
+propulsion_jam_attempts,Attempt,,1,,

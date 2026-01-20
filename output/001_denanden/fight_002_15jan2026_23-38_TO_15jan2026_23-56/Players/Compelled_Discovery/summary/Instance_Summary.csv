@@ -1,0 +1,4 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Hits,Domination Medium Proton Smartbomb,26,422,16.23076923076923
+damage_received,Hits,Inferno Rage Heavy Assault Missile,9,3691,410.1111111111111
+propulsion_jam_attempts,Attempt,,7,,

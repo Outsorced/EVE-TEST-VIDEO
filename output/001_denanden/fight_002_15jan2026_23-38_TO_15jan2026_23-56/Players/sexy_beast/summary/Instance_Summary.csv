@@ -1,0 +1,10 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Glances Off,Warrior II,4,83,20.75
+damage_done,Grazes,Warrior II,3,51,17.0
+damage_done,Hits,Warrior II,13,338,26.0
+damage_done,Penetrates,Warrior II,9,302,33.55555555555556
+damage_done,Smashes,Warrior II,3,114,38.0
+ewar_effects_received,ECM,Gravimetric ECM II,15,,
+ewar_effects_received,ECM,Ladar ECM II,8,,
+repairs_done,,Large Remote Shield Booster II,2,439,219.5
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,2,0,0.0

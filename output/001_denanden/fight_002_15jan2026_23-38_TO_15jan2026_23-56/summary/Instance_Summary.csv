@@ -1,0 +1,73 @@
+dataset,result,module,count,total_amount,avg_amount
+cap_warfare_received,Energy Neutralizer,Heavy Gremlin Compact Energy Neutralizer,98,31615,322.6020408163265
+cap_warfare_received,Energy Neutralizer,Medium Energy Neutralizer II,15,2080,138.66666666666666
+cap_warfare_received,Energy Neutralizer,Medium Gremlin Compact Energy Neutralizer,9,598,66.44444444444444
+cap_warfare_received,Energy Nosferatu,Heavy Energy Nosferatu II,45,384,8.533333333333333
+cap_warfare_received,Energy Nosferatu,Medium Energy Nosferatu II,30,2,0.06666666666666667
+capacitor_done,Remote Capacitor Transfer,Large Remote Capacitor Transmitter II,1244,261757,210.41559485530547
+capacitor_received,Remote Capacitor Transfer,Large Remote Capacitor Transmitter II,562,121613,216.3932384341637
+damage_done,Glances Off,425mm AutoCannon II,19,7816,411.36842105263156
+damage_done,Glances Off,Warrior II,37,293,7.918918918918919
+damage_done,Grazes,425mm AutoCannon II,43,9659,224.62790697674419
+damage_done,Grazes,Warrior II,35,215,6.142857142857143
+damage_done,Hits,425mm AutoCannon II,26,14748,567.2307692307693
+damage_done,Hits,Domination Medium Proton Smartbomb,1253,91547,73.06225059856345
+damage_done,Hits,Warrior II,65,752,11.569230769230769
+damage_done,Misses completely,425mm AutoCannon II,9,0,0.0
+damage_done,Penetrates,425mm AutoCannon II,19,12627,664.578947368421
+damage_done,Penetrates,Warrior II,59,789,13.372881355932204
+damage_done,Smashes,425mm AutoCannon II,4,3025,756.25
+damage_done,Smashes,Warrior II,57,755,13.24561403508772
+damage_received,Glances Off,Caldari Navy Warden,2,43,21.5
+damage_received,Glances Off,Hammerhead II,28,224,8.0
+damage_received,Glances Off,Imperial Navy Curator,16,837,52.3125
+damage_received,Glances Off,Sentry Mutated Drone,4,145,36.25
+damage_received,Glances Off,Warrior II,1,32,32.0
+damage_received,Grazes,Caldari Navy Warden,2,35,17.5
+damage_received,Grazes,Hammerhead II,30,197,6.566666666666666
+damage_received,Grazes,Imperial Navy Curator,10,441,44.1
+damage_received,Grazes,Sentry Mutated Drone,3,97,32.333333333333336
+damage_received,Grazes,Warden II,1,18,18.0
+damage_received,Grazes,Warrior II,1,10,10.0
+damage_received,Hits,Caldari Navy Scourge Heavy Assault Missile,11,3709,337.1818181818182
+damage_received,Hits,Caldari Navy Warden,1,27,27.0
+damage_received,Hits,Domination Medium Proton Smartbomb,1983,78749,39.71205244578921
+damage_received,Hits,Hammerhead II,37,374,10.108108108108109
+damage_received,Hits,Imperial Navy Curator,24,1604,66.83333333333333
+damage_received,Hits,Inferno Javelin Heavy Assault Missile,20,5537,276.85
+damage_received,Hits,Inferno Rage Heavy Assault Missile,129,30429,235.88372093023256
+damage_received,Hits,Scourge Rage Heavy Assault Missile,30,7818,260.6
+damage_received,Hits,Sentry Mutated Drone,2,99,49.5
+damage_received,Hits,Small EMP Smartbomb II,3,44,14.666666666666666
+damage_received,Hits,Warrior II,3,63,21.0
+damage_received,Misses completely,Caldari Navy Warden,6,0,0.0
+damage_received,Misses completely,Hammerhead II,19,0,0.0
+damage_received,Misses completely,Imperial Navy Curator,14,0,0.0
+damage_received,Misses completely,Sentry Mutated Drone,2,0,0.0
+damage_received,Misses completely,Warden II,3,0,0.0
+damage_received,Misses completely,Warrior II,1,0,0.0
+damage_received,Penetrates,Caldari Navy Warden,3,107,35.666666666666664
+damage_received,Penetrates,Hammerhead II,62,769,12.403225806451612
+damage_received,Penetrates,Imperial Navy Curator,27,2351,87.07407407407408
+damage_received,Penetrates,Sentry Mutated Drone,5,301,60.2
+damage_received,Penetrates,Warden II,1,40,40.0
+damage_received,Penetrates,Warrior II,4,142,35.5
+damage_received,Smashes,Caldari Navy Warden,1,41,41.0
+damage_received,Smashes,Hammerhead II,34,525,15.441176470588236
+damage_received,Smashes,Imperial Navy Curator,16,1614,100.875
+damage_received,Smashes,Sentry Mutated Drone,3,220,73.33333333333333
+damage_received,Smashes,Warrior II,3,154,51.333333333333336
+damage_received,Wrecks,Hammerhead II,2,80,40.0
+damage_received,Wrecks,Imperial Navy Curator,1,229,229.0
+damage_received,Wrecks,Warden II,1,98,98.0
+ewar_effects_received,ECM,Gravimetric ECM II,15,,
+ewar_effects_received,ECM,Halting Compact Ladar ECM,19,,
+ewar_effects_received,ECM,Ladar ECM II,37,,
+ewar_effects_received,ECM,Languid Enduring Ladar ECM,9,,
+ewar_effects_received,ECM,Vespa EC-600,5,,
+propulsion_jam_attempts,Attempt,,86,,
+repairs_done,,Large Remote Shield Booster II,444,251471,566.3761261261261
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,680,300925,442.5367647058824
+repairs_done,,Pithum B-Type Medium Remote Shield Booster,166,57445,346.0542168674699
+repairs_received,,Large Remote Shield Booster II,38,17324,455.89473684210526
+repairs_received,,Pithum A-Type Medium Remote Shield Booster,107,37684,352.1869158878505

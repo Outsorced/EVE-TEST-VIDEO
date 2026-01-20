@@ -1,0 +1,4 @@
+dataset,result,module,count,total_amount,avg_amount
+damage_done,Hits,Domination Medium Proton Smartbomb,58,1708,29.448275862068964
+damage_received,Hits,Domination Medium Proton Smartbomb,161,6357,39.484472049689444
+repairs_done,,Pithum A-Type Medium Remote Shield Booster,13,6459,496.84615384615387
